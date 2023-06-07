@@ -20,7 +20,7 @@ app.post("/order", async (req, res) => {
     currency: "BDT",
     tran_id: tran_id, // use unique tran_id for each api call
     success_url: `http://localhost:3030/payment/success/${tran_id}`,
-    fail_url: "http://localhost:3030/fail",
+    fail_url: `http://localhost:3030/payment/fail/${tran_id}`,
     cancel_url: "http://localhost:3030/cancel",
     ipn_url: "http://localhost:3030/ipn",
     shipping_method: "Courier",
@@ -72,7 +72,7 @@ app.post("/order", async (req, res) => {
     console.log(req.params.tranId);
 
     // update payment history after successfull payment
-    // const result = orderCollection.updateOne(
+    // const result = await orderCollection.updateOne(
     //   {
     //     tranjectionId: req.params.tranId,
     //   },
@@ -88,6 +88,18 @@ app.post("/order", async (req, res) => {
     // }
 
     // update payment history after successfull payment
+  });
+
+  app.post("/payment/fail/:tranId", async (req, res) => {
+    // update payment history after failed payment
+
+    // const result = await orderCollect.deleteOne({ tranjectionId: req.params.tranId });
+
+    // if (result.deletedCount) {
+    res.redirect(`http://localhost:3000/payment/fail/${req.params.tranId}`);
+    // }
+
+    // update payment history after failed payment
   });
 });
 
